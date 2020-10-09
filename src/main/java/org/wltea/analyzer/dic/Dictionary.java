@@ -226,7 +226,6 @@ public class Dictionary {
 				if (filePath != null && !"".equals(filePath.trim())) {
 					Path file = PathUtils.get(getDictRoot(), filePath.trim());
 					walkFileTree(extDictFiles, file);
-
 				}
 			}
 		}
@@ -259,7 +258,6 @@ public class Dictionary {
 				if (filePath != null && !"".equals(filePath.trim())) {
 					Path file = PathUtils.get(getDictRoot(), filePath.trim());
 					walkFileTree(extStopWordDictFiles, file);
-
 				}
 			}
 		}
@@ -275,7 +273,6 @@ public class Dictionary {
 			for (String filePath : filePaths) {
 				if (filePath != null && !"".equals(filePath.trim())) {
 					remoteExtStopWordDictFiles.add(filePath);
-
 				}
 			}
 		}
@@ -415,11 +412,11 @@ public class Dictionary {
 	private void loadRemoteExtDict() {
 		List<String> remoteExtDictFiles = getRemoteExtDictionarys();
 		for (String location : remoteExtDictFiles) {
-			logger.info("[Dict Loading] " + location);
+			logger.info("[Dict Remote Loading] " + location);
 			List<String> lists = getRemoteWords(location);
 			// 如果找不到扩展的字典，则忽略
 			if (lists == null) {
-				logger.error("[Dict Loading] " + location + " load failed");
+				logger.error("[Dict Remote Loading] " + location + " load failed");
 				continue;
 			}
 			for (String theWord : lists) {
@@ -430,7 +427,6 @@ public class Dictionary {
 				}
 			}
 		}
-
 	}
 
 	private static List<String> getRemoteWords(String location) {
@@ -446,7 +442,9 @@ public class Dictionary {
 	private static List<String> getRemoteWordsUnprivileged(String location) {
 
 		List<String> buffer = new ArrayList<String>();
-		RequestConfig rc = RequestConfig.custom().setConnectionRequestTimeout(10 * 1000).setConnectTimeout(10 * 1000)
+		RequestConfig rc = RequestConfig.custom()
+				.setConnectionRequestTimeout(10 * 1000)
+				.setConnectTimeout(10 * 1000)
 				.setSocketTimeout(60 * 1000).build();
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		CloseableHttpResponse response;
@@ -477,9 +475,10 @@ public class Dictionary {
 						}
 						in.close();
 						response.close();
+						logger.info(String.format("[Dict Remote Loading] location:%s,  count:%d", location, buffer.size()));
 						return buffer;
 					}
-			}
+				}
 			}
 			response.close();
 		} catch (IllegalStateException | IOException e) {
@@ -492,18 +491,18 @@ public class Dictionary {
 	 * 加载用户扩展的停止词词典
 	 */
 	private void loadStopWordDict() {
-		// 建立主词典实例
+		// 1. 建立主词典实例
 		_StopWords = new DictSegment((char) 0);
 
 		// 读取主词典文件
 		Path file = PathUtils.get(getDictRoot(), Dictionary.PATH_DIC_STOP);
 		loadDictFile(_StopWords, file, false, "Main Stopwords");
 
-		// 加载扩展停止词典
+		// 2. 加载扩展停止词典
 		List<String> extStopWordDictFiles = getExtStopWordDictionarys();
 		if (extStopWordDictFiles != null) {
 			for (String extStopWordDictName : extStopWordDictFiles) {
-				logger.info("[Dict Loading] " + extStopWordDictName);
+				logger.info("[Dict Stop Loading] " + extStopWordDictName);
 
 				// 读取扩展词典文件
 				file = PathUtils.get(extStopWordDictName);
@@ -511,14 +510,14 @@ public class Dictionary {
 			}
 		}
 
-		// 加载远程停用词典
+		// 3. 加载远程停用词典
 		List<String> remoteExtStopWordDictFiles = getRemoteExtStopWordDictionarys();
 		for (String location : remoteExtStopWordDictFiles) {
-			logger.info("[Dict Loading] " + location);
+			logger.info("[Dict Remote Stop Loading] " + location);
 			List<String> lists = getRemoteWords(location);
 			// 如果找不到扩展的字典，则忽略
 			if (lists == null) {
-				logger.error("[Dict Loading] " + location + " load failed");
+				logger.error("[Dict Remote Stop Loading] " + location + " load failed");
 				continue;
 			}
 			for (String theWord : lists) {
@@ -570,6 +569,7 @@ public class Dictionary {
 		tmpDict.loadStopWordDict();
 		_MainDict = tmpDict._MainDict;
 		_StopWords = tmpDict._StopWords;
+
 		logger.info("reload ik dict finished.");
 	}
 

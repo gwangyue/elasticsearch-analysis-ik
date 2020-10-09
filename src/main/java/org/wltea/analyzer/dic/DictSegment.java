@@ -38,14 +38,11 @@ class DictSegment implements Comparable<DictSegment>{
 	private static final Map<Character , Character> charMap = new ConcurrentHashMap<Character , Character>(16 , 0.95f);
 	//数组大小上限
 	private static final int ARRAY_LENGTH_LIMIT = 3;
-
-	
 	//Map存储结构
 	private Map<Character , DictSegment> childrenMap;
 	//数组方式存储结构
 	private DictSegment[] childrenArray;
-	
-	
+
 	//当前节点上存储的字符
 	private Character nodeChar;
 	//当前节点存储的Segment数目
@@ -122,7 +119,7 @@ class DictSegment implements Comparable<DictSegment>{
 		DictSegment[] segmentArray = this.childrenArray;
 		Map<Character , DictSegment> segmentMap = this.childrenMap;		
 		
-		//STEP1 在节点中查找keyChar对应的DictSegment
+		//STEP1: 在节点中查找keyChar对应的DictSegment
 		if(segmentArray != null){
 			//在数组中查找
 			DictSegment keySegment = new DictSegment(keyChar);
@@ -136,7 +133,7 @@ class DictSegment implements Comparable<DictSegment>{
 			ds = (DictSegment)segmentMap.get(keyChar);
 		}
 		
-		//STEP2 找到DictSegment，判断词的匹配状态，是否继续递归，还是返回结果
+		//STEP2: 找到DictSegment，判断词的匹配状态，是否继续递归，还是返回结果
 		if(ds != null){			
 			if(length > 1){
 				//词未匹配完，继续往下搜索
@@ -208,7 +205,6 @@ class DictSegment implements Comparable<DictSegment>{
 				ds.nodeState = enabled;
 			}
 		}
-
 	}
 	
 	/**
@@ -254,7 +250,6 @@ class DictSegment implements Comparable<DictSegment>{
 					//释放当前的数组引用
 					this.childrenArray = null;
 				}
-
 			}			
 			
 		}else{
