@@ -46,14 +46,12 @@ class AnalyzeContext {
 	private static final int BUFF_SIZE = 4096;
 	//缓冲区耗尽的临界值
 	private static final int BUFF_EXHAUST_CRITICAL = 100;	
-	
- 
+
 	//字符串读取缓冲
     private char[] segmentBuff;
     //字符类型数组
     private int[] charTypes;
-    
-    
+
     //记录Reader内已分析的字串总长度
     //在分多段分析词元时，该变量累计当前的segmentBuff相对于reader起始位置的位移
 	private int buffOffset;	
@@ -70,7 +68,7 @@ class AnalyzeContext {
     //原始分词结果集合，未经歧义处理
     private QuickSortSet orgLexemes;    
     //LexemePath位置索引表
-    private Map<Integer , LexemePath> pathMap;    
+    private Map<Integer , LexemePath> pathMap;
     //最终分词结果集
     private LinkedList<Lexeme> results;
 	//分词器配置项
@@ -139,7 +137,7 @@ class AnalyzeContext {
      */
     void initCursor(){
     	this.cursor = 0;
-    	this.segmentBuff[this.cursor] = CharacterUtil.regularize(this.segmentBuff[this.cursor],cfg.isEnableLowercase());
+    	this.segmentBuff[this.cursor] = CharacterUtil.regularize(this.segmentBuff[this.cursor], cfg.isEnableLowercase());
     	this.charTypes[this.cursor] = CharacterUtil.identifyCharType(this.segmentBuff[this.cursor]);
     }
     
@@ -151,7 +149,7 @@ class AnalyzeContext {
     boolean moveCursor(){
     	if(this.cursor < this.available - 1){
     		this.cursor++;
-        	this.segmentBuff[this.cursor] = CharacterUtil.regularize(this.segmentBuff[this.cursor],cfg.isEnableLowercase());
+        	this.segmentBuff[this.cursor] = CharacterUtil.regularize(this.segmentBuff[this.cursor], cfg.isEnableLowercase());
         	this.charTypes[this.cursor] = CharacterUtil.identifyCharType(this.segmentBuff[this.cursor]);
     		return true;
     	}else{

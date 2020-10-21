@@ -60,8 +60,7 @@ public class Lexeme implements Comparable<Lexeme>{
     private String lexemeText;
     //词元类型
     private int lexemeType;
-    
-    
+
 	public Lexeme(int offset , int begin , int length , int lexemeType){
 		this.offset = offset;
 		this.begin = begin;
@@ -114,6 +113,7 @@ public class Lexeme implements Comparable<Lexeme>{
      * 词元在排序集合中的比较算法
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
+	@Override
 	public int compareTo(Lexeme other) {
 		//起始位置优先
         if(this.begin < other.getBegin()){
@@ -279,6 +279,5 @@ public class Lexeme implements Comparable<Lexeme>{
 		strbuf.append(this.getLexemeTypeString());
 		return strbuf.toString();
 	}
-	
 
 }

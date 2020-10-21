@@ -114,7 +114,6 @@ class IKArbitrator {
 		
 		//返回集合中的最优方案
 		return pathOptions.first();
-
 	}
 	
 	/**
@@ -146,7 +145,6 @@ class IKArbitrator {
 		while(option.checkCross(l)){
 			option.removeTail();
 		}
-		
 	}
 	
 }

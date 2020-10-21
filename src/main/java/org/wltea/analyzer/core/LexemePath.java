@@ -66,7 +66,7 @@ class LexemePath extends QuickSortSet implements Comparable<LexemePath>{
 			
 		}else{
 			return  false;
-			
+
 		}
 	}
 	
@@ -194,8 +194,9 @@ class LexemePath extends QuickSortSet implements Comparable<LexemePath>{
 		return theCopy;
 	}
 
+	@Override
 	public int compareTo(LexemePath o) {
-		//比较有效文本长度
+		// 比较有效文本长度
 		if(this.payloadLength > o.payloadLength){
 			return -1;
 		}else if(this.payloadLength < o.payloadLength){

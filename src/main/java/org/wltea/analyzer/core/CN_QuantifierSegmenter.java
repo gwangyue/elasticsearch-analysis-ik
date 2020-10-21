@@ -76,6 +76,7 @@ class CN_QuantifierSegmenter implements ISegmenter{
 	/**
 	 * 分词
 	 */
+	@Override
 	public void analyze(AnalyzeContext context) {
 		//处理中文数词
 		this.processCNumber(context);
@@ -95,6 +96,7 @@ class CN_QuantifierSegmenter implements ISegmenter{
 	/**
 	 * 重置子分词器状态
 	 */
+	@Override
 	public void reset() {
 		nStart = -1;
 		nEnd = -1;
@@ -208,7 +210,7 @@ class CN_QuantifierSegmenter implements ISegmenter{
 	 */
 	private boolean needCountScan(AnalyzeContext context){
 		if((nStart != -1 && nEnd != -1 ) || !countHits.isEmpty()){
-			//正在处理中文数词,或者正在处理量词
+			//正在处理 中文数词, 或者正在处理 量词
 			return true;
 		}else{
 			//找到一个相邻的数词
@@ -232,7 +234,6 @@ class CN_QuantifierSegmenter implements ISegmenter{
 			//输出数词
 			Lexeme newLexeme = new Lexeme(context.getBufferOffset() , nStart , nEnd - nStart + 1 , Lexeme.TYPE_CNUM);
 			context.addLexeme(newLexeme);
-			
 		}
 	}
 
